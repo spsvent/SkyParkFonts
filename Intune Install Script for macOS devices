@@ -1,0 +1,51 @@
+#!/bin/zsh
+####Intune Install Script for macOS devices##########
+# --- Variables ---
+# Direct raw download URLs for fonts in the spsvent/SkyParkFonts repository
+font_urls=(
+    "https://raw.githubusercontent.com/spsvent/SkyParkFonts/main/Avenir-Black.otf"
+    "https://raw.githubusercontent.com/spsvent/SkyParkFonts/main/Avenir-Book.otf"
+    "https://raw.githubusercontent.com/spsvent/SkyParkFonts/main/Avenir-Heavy.otf"
+    "https://raw.githubusercontent.com/spsvent/SkyParkFonts/main/Avenir-Roman.otf"
+    "https://raw.githubusercontent.com/spsvent/SkyParkFonts/main/DIN-Condensed-Bold.otf"
+    "https://raw.githubusercontent.com/spsvent/SkyParkFonts/main/Proxima%20Nova%20Alt%20Bold.otf"
+    "https://raw.githubusercontent.com/spsvent/SkyParkFonts/main/Proxima%20Nova%20Alt%20Light.otf"
+    "https://raw.githubusercontent.com/spsvent/SkyParkFonts/main/Proxima%20Nova%20Alt%20Regular.otf"
+    "https://raw.githubusercontent.com/spsvent/SkyParkFonts/main/ProximaNova-Bold.otf"
+    "https://raw.githubusercontent.com/spsvent/SkyParkFonts/main/ProximaNova-Light.otf"
+    "https://raw.githubusercontent.com/spsvent/SkyParkFonts/main/ProximaNova-Regular.otf"
+    "https://raw.githubusercontent.com/spsvent/SkyParkFonts/main/ProximaNova-Semibold.otf"
+)
+
+# --- Do not edit below this line ---
+font_dir="/Library/Fonts"
+temp_dir=$(mktemp -d)
+
+# Function to download and install a font
+install_font() {
+    url=$1
+    # Decode URL-encoded characters like %20 for the filename
+    font_file_name=$(basename "${1//%/\\}")
+    echo "Downloading $font_file_name..."
+    if curl -s -L -o "$temp_dir/$font_file_name" "$url"; then
+        echo "Successfully downloaded $font_file_name."
+        echo "Installing $font_file_name to $font_dir..."
+        if mv "$temp_dir/$font_file_name" "$font_dir/"; then
+            echo "Successfully installed $font_file_name."
+        else
+            echo "Error: Failed to move $font_file_name to $font_dir."
+        fi
+    else
+        echo "Error: Failed to download $font_file_name."
+    fi
+}
+
+# Loop through the font URLs and install each one
+for url in "${font_urls[@]}"; do
+    install_font "$url"
+done
+
+# Clean up the temporary directory
+rm -rf "$temp_dir"
+
+exit 0
