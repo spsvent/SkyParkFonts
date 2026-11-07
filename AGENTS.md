@@ -22,7 +22,8 @@ as a shortcut. Changes to these safeguards require independent owner review.
 
 ## SkyPark repository workflow
 
-Owner: Justin Nunn (`@skyparkjustin`). Work account: `skyparkjustin`.
+Owner: Justin Nunn (`@skyparkjustin`). Each employee uses their own authorized
+work GitHub account; the owner's account is not a shared login.
 - Work in an issue branch; reference the local issue or the cross-repo tracking issue.
   Never commit/push directly to the default branch, force-push, rewrite history,
   or bypass checks with `--no-verify`. Do not merge without independent review.
